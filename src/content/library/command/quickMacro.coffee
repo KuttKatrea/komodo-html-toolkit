@@ -1,5 +1,5 @@
 view     = ko.views.manager and ko.views.manager.currentView
-document = view and view.document
+document = view and view.koDoc
 scimoz   = view and view.scimoz
 session  = (this.__quickMacro_session or= {})
 _ = __   = scimoz and scimoz.selText

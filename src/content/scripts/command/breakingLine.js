@@ -42,7 +42,7 @@ $self.controller = function() {
 		$toolkit.regexp.matchWhitespace(lineRange, '^');
 		var thisLineIndent = ($toolkit.regexp.lastMatches || ['']).shift();
 
-		var newLineStyle = $toolkit.editor.guessNewLine(view.document),
+		var newLineStyle = $toolkit.editor.guessNewLine(view.koDoc),
 			brTag = $toolkit.htmlUtils.fixTagCase('br', $toolkit.editor.guessTagsCasing(scimoz)),
 			closingStyle = ($toolkit.htmlUtils.isXHtmlDoctype($toolkit.editor.guessDoctype(view)) ? ' /' : ''),
 			breakingLineText = '<' + brTag + closingStyle + '>' + newLineStyle + thisLineIndent;

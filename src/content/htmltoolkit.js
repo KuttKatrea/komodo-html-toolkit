@@ -204,16 +204,27 @@ if (typeof (extensions) === 'undefined')
 		return prefsBranch.getCharPref(key);
 	};
 
-	$toolkit.registerAll('module');
-	$toolkit.registerAll('command');
-	$toolkit.registerAll('hyperlink');
+        var extensionId = 'htmltoolkit@psp-webtech.co.uk';
 
-	$toolkit.include('events');
+        $toolkit.installDirectory = null;
 
-	$toolkit.events.onLoad(function() {
-		window.setTimeout(function() {
-			$toolkit.checkCompatibility();
-		}, 750);
-	});
+        AddonManager.getAddonByID(extensionId, function(aAddon) {
+            var file = aAddon.getResourceURI("install.rdf").QueryInterface(Components.interfaces.nsIFileURL).file;
 
+            $toolkit.installDirectory = file.parent;
+
+            return;
+
+            $toolkit.registerAll('module');
+            $toolkit.registerAll('command');
+            $toolkit.registerAll('hyperlink');
+
+            $toolkit.include('events');
+
+            $toolkit.events.onLoad(function() {
+                    window.setTimeout(function() {
+                            $toolkit.checkCompatibility();
+                    }, 750);
+            });
+        });
 })();

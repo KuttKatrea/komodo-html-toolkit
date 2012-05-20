@@ -83,8 +83,8 @@ $self.storage = new (function() {
 
 	this.getViewUri = function(view) {
 
-		if (view.document.file)
-			return view.document.file.URI;
+		if (view.koDoc.file)
+			return view.koDoc.file.URI;
 
 		return view.uid;
 	};
@@ -187,7 +187,7 @@ $self.dispatcher = {
 		var view = e.originalTarget;
 		if (view &&
 			view.getAttribute('type') === 'editor' &&
-			view.document &&
+			view.koDoc &&
 			view.scimoz) {
 
 			var installResult = $self.dispatcher.checkAndInstall(view);
@@ -213,7 +213,7 @@ $self.dispatcher = {
 		for (var i = 0; i < $self.dispatcher.converters.length; i ++) {
 
 			converter = $self.dispatcher.converters[i];
-			if (converter.language === view.document.language) {
+			if (converter.language === view.koDoc.language) {
 
 				if (view.__preview_installed)
 					$self.dispatcher.replace(view, converter);
@@ -228,6 +228,7 @@ $self.dispatcher = {
 	},
 
 	install: function(view, converter) {
+            alert('lol');
 
 		if ( ! view.__preview_installed) {
 
@@ -352,8 +353,8 @@ $self.dispatcher = {
 
 			var viewPath = '';
 
-			if ($self.dispatcher.pathService.isfile(view.document.displayPath))
-				viewPath = 'file://' + $self.dispatcher.pathService.dirname(view.document.displayPath) + $self.dispatcher.osService.sep;
+			if ($self.dispatcher.pathService.isfile(view.koDoc.displayPath))
+				viewPath = 'file://' + $self.dispatcher.pathService.dirname(view.koDoc.displayPath) + $self.dispatcher.osService.sep;
 			else
 				viewPath = 'file://' + $self.dispatcher.osService.getcwd() + $self.dispatcher.osService.sep;
 
@@ -420,7 +421,7 @@ $self.dispatcher = {
 
 		var updateHTML = function(e) {
 
-			previewElement.contentDocument.documentElement.innerHTML = template;
+			previewElement.contentDocument.koDocElement.innerHTML = template;
 
 			// If an Event object was passed in, unregister event handler
 			if (e)

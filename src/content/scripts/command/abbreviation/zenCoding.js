@@ -20,8 +20,8 @@
         return false;
       }
       isHtmlBuffer = root.editor.isHtmlBuffer(view);
-      isLanguageSupported = SUBLANGUAGE_SUPPORTED_LIST.indexOf(view.document.subLanguage) >= 0;
-      isLanguageSupported || (isLanguageSupported = SUBLANGUAGE_EXTRA_LIST.indexOf(view.document.subLanguage) >= 0);
+      isLanguageSupported = SUBLANGUAGE_SUPPORTED_LIST.indexOf(view.koDoc.subLanguage) >= 0;
+      isLanguageSupported || (isLanguageSupported = SUBLANGUAGE_EXTRA_LIST.indexOf(view.koDoc.subLanguage) >= 0);
       isLanguageSupported || (isLanguageSupported = isHtmlBuffer);
       if (!isLanguageSupported) {
         return false;
@@ -65,7 +65,7 @@
       zen_editor.setContext(view);
       content = zen_coding.expandAbbreviation(abbreviation, zen_editor.getSyntax(), zen_editor.getProfileName());
       if (content != null ? content.length : void 0) {
-        if (content.indexOf('<') === 0 && SUBLANGUAGE_EXTRA_LIST.indexOf(view.document.subLanguage) >= 0) {
+        if (content.indexOf('<') === 0 && SUBLANGUAGE_EXTRA_LIST.indexOf(view.koDoc.subLanguage) >= 0) {
           return null;
         }
         tabstop = 0;

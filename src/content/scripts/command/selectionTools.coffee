@@ -88,7 +88,7 @@ $self.controller = ->
     return ko.views.manager and
            ko.views.manager.currentView and
            ko.views.manager.currentView.getAttribute('type') is 'editor' and
-           ko.views.manager.currentView.document and
+           ko.views.manager.currentView.koDoc and
            ko.views.manager.currentView.scimoz and
            ko.views.manager.currentView.scimoz.currentPos isnt ko.views.manager.currentView.scimoz.anchor
 

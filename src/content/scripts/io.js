@@ -1,23 +1,20 @@
 const Cc = Components.classes;
 const Ci = Components.interfaces;
+Components.utils.import("resource://gre/modules/AddonManager.jsm");
 
 $self.getRelativeURI = function(path, asFile) {
+    var installDirectory = $toolkit.installDirectory.clone();
 
-	var extensionId = 'htmltoolkit@psp-webtech.co.uk',
-		extensionManager = Cc['@mozilla.org/extensions/manager;1'].getService(Ci.nsIExtensionManager),
-		installFile = extensionManager.getInstallLocation(extensionId).getItemFile(extensionId, 'install.rdf'),
-		installDirectory = installFile.parent;
+    if (path)
+            path.split('/').forEach(function(pathEntry) {
+                    if (pathEntry.length)
+                            installDirectory.append(pathEntry);
+            });
 
-	if (path)
-		path.split('/').forEach(function(pathEntry) {
-			if (pathEntry.length)
-				installDirectory.append(pathEntry);
-		});
+    if (asFile)
+            return installDirectory;
 
-	if (asFile)
-		return installDirectory;
-
-	return installDirectory.path;
+    return installDirectory.path;
 };
 
 $self.findFilesInURI = function(path, pattern, asFile) {

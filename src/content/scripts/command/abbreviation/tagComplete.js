@@ -24,7 +24,7 @@ $self.provider = function() {
 
 		return (('true' === $toolkit.pref('tagComplete.libraryEnabled') ||
                  'true' === $toolkit.pref('tagComplete.defaultEnabled')) &&
-                SUBLANGUAGE_SUPPORTED_LIST.indexOf(view.document.subLanguage) >= 0 &&
+                SUBLANGUAGE_SUPPORTED_LIST.indexOf(view.koDoc.subLanguage) >= 0 &&
 				$toolkit.editor.isHtmlBuffer(view));
 	};
 

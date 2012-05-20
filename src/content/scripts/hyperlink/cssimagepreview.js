@@ -67,15 +67,15 @@ ko.hyperlinks.ImagePreviewHandler.prototype.show = function(view, scimoz, positi
 	else {
 
 		// Skip unsaved buffers as they don't have an URI attached
-		if ( ! view.document.file) {
+		if ( ! view.koDoc.file) {
 
-			ko.statusBar.AddMessage($toolkit.l10n('hyperlink').formatStringFromName('cssImagePreview.unsaved', [view.document.displayPath], 1), 'htmltoolkit', 1500, false);
+			ko.statusBar.AddMessage($toolkit.l10n('hyperlink').formatStringFromName('cssImagePreview.unsaved', [view.koDoc.displayPath], 1), 'htmltoolkit', 1500, false);
 
 			return hyperlinkMatch;
 		}
 
 		// Base path for resources
-		imageURI = view.document.file.URI.substring(0, view.document.file.URI.length - view.document.file.baseName.length)
+		imageURI = view.koDoc.file.URI.substring(0, view.koDoc.file.URI.length - view.koDoc.file.baseName.length)
 				 + imagePath;
 	}
 

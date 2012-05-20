@@ -94,7 +94,7 @@
     root.command.controller.apply(this, [command = 'selectionTools', triggerKeys = 'None', canChangeTriggerKeys = false]);
     this.hasNative = document.getElementById(TOOL_NATIVE_MENU_ID) != null;
     this.canExecute = function(e) {
-      return ko.views.manager && ko.views.manager.currentView && ko.views.manager.currentView.getAttribute('type') === 'editor' && ko.views.manager.currentView.document && ko.views.manager.currentView.scimoz && ko.views.manager.currentView.scimoz.currentPos !== ko.views.manager.currentView.scimoz.anchor;
+      return ko.views.manager && ko.views.manager.currentView && ko.views.manager.currentView.getAttribute('type') === 'editor' && ko.views.manager.currentView.koDoc && ko.views.manager.currentView.scimoz && ko.views.manager.currentView.scimoz.currentPos !== ko.views.manager.currentView.scimoz.anchor;
     };
     this.rebuildEditMenu = function() {
       var globalSet, isMac, popupEl, referenceEl, separatorEl, topMenuEl, _ref;

@@ -22,7 +22,7 @@ $self.provider = function() {
 
 	this.canExecute = function(view) {
 
-		return (SUBLANGUAGE_SUPPORTED_LIST.indexOf(view.document.subLanguage) >= 0 &&
+		return (SUBLANGUAGE_SUPPORTED_LIST.indexOf(view.koDoc.subLanguage) >= 0 &&
 				$toolkit.editor.isHtmlBuffer(view));
 	}
 

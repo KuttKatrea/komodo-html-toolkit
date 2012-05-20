@@ -51,14 +51,14 @@ clearEverything = ->
 
 startPolling = (view) ->
   block = ->
-    return clearEverything() unless view?.document
+    return clearEverything() unless view?.koDoc
     try
       if view.getAttribute('type') is 'editor'
-        newEncodingName       = view.document.encoding.short_encoding_name
-        newEncodingPythonName = view.document.encoding.python_encoding_name
-        newEncodingLongName   = view.document.encoding.friendly_encoding_name
-        newEncodingUseBOM     = view.document.encoding.use_byte_order_marker
-        newNewlineEndings     = view.document.new_line_endings
+        newEncodingName       = view.koDoc.encoding.short_encoding_name
+        newEncodingPythonName = view.koDoc.encoding.python_encoding_name
+        newEncodingLongName   = view.koDoc.encoding.friendly_encoding_name
+        newEncodingUseBOM     = view.koDoc.encoding.use_byte_order_marker
+        newNewlineEndings     = view.koDoc.new_line_endings
         if lastEncodingName       isnt newEncodingName \
         or lastEncodingPythonName isnt newEncodingPythonName \
         or lastEncodingLongName   isnt newEncodingLongName \
@@ -119,7 +119,7 @@ events =
 
 currentView = ->
   view = ko.views.manager?.currentView
-  if view and view.getAttribute('type') is 'editor' and view.document and view.scimoz then view else false
+  if view and view.getAttribute('type') is 'editor' and view.koDoc and view.scimoz then view else false
 
 root.addEventListener eventName, eventHandler, true for eventName, eventHandler of events
 ko.main.addWillCloseHandler -> root.removeEventListener eventName, eventHandler, true for eventName, eventHandler of events
@@ -129,13 +129,13 @@ $toolkit.statusbar or= {}
 $toolkit.statusbar.updateViewLineEndings = (mode) ->
   return if lastNewlineEndings is mode
   return unless view = currentView()
-  view.document.new_line_endings = mode
-  view.document.prefs.setStringPref 'endOfLine', newlineEndings[mode]
+  view.koDoc.new_line_endings = mode
+  view.koDoc.prefs.setStringPref 'endOfLine', newlineEndings[mode]
   restartPolling originalTarget: view
 
 $toolkit.statusbar.updateViewExistingEndings = ->
   return unless view = currentView()
-  view.document.existing_line_endings = lastNewlineEndings
+  view.koDoc.existing_line_endings = lastNewlineEndings
 
 $toolkit.statusbar.updateViewEncoding = (pythonName) ->
   return if lastEncodingPythonName is pythonName
@@ -144,11 +144,11 @@ $toolkit.statusbar.updateViewEncoding = (pythonName) ->
   viewEncoding = Cc['@activestate.com/koEncoding;1'].createInstance Ci.koIEncoding
   viewEncoding.python_encoding_name = pythonName
   viewEncoding.use_byte_order_marker = newEncoding.byte_order_marker and lastEncodingUseBOM
-  warning  = view.document.languageObj.getEncodingWarning viewEncoding
+  warning  = view.koDoc.languageObj.getEncodingWarning viewEncoding
   question = $toolkit.l10n('htmltoolkit').formatStringFromName 'areYouSureThatYouWantToChangeTheEncoding', [warning], 1
   if warning is '' or ko.dialogs.yesNo(question, 'No') is 'Yes'
     try
-      view.document.encoding = viewEncoding
+      view.koDoc.encoding = viewEncoding
       view.lintBuffer.request()
       restartPolling originalTarget: view
     catch error
@@ -156,7 +156,7 @@ $toolkit.statusbar.updateViewEncoding = (pythonName) ->
       errorCode    = lastErrorSvc.getLastErrorCode()
       errorMessage = lastErrorSvc.getLastErrorMessage()
       if errorCode is 0
-        message = $toolkit.l10n('htmltoolkit').formatStringFromName 'internalErrorSettingTheEncoding', [view.document.displayPath, pythonName], 2
+        message = $toolkit.l10n('htmltoolkit').formatStringFromName 'internalErrorSettingTheEncoding', [view.koDoc.displayPath, pythonName], 2
         ko.dialogs.internalError message, "#{message}\n\n#{errorMessage}", error
       else
         question = $toolkit.l10n('htmltoolkit').formatStringFromName 'forceEncodingConversion', [errorMessage], 1
@@ -170,33 +170,33 @@ $toolkit.statusbar.updateViewEncoding = (pythonName) ->
         )
         if choice is applyButton
           try
-            view.document.forceEncodingFromEncodingName pythonName
+            view.koDoc.forceEncodingFromEncodingName pythonName
             restartPolling originalTarget: view
           catch error
-            message = $toolkit.l10n('htmltoolkit').formatStringFromName 'internalErrorForcingTheEncoding', [view.document.displayPath, pythonName], 2
+            message = $toolkit.l10n('htmltoolkit').formatStringFromName 'internalErrorForcingTheEncoding', [view.koDoc.displayPath, pythonName], 2
             ko.dialogs.internalError message, "#{message}\n\n#{errorMessage}", error
 
 $toolkit.statusbar.updateViewEncodingBOM = ->
   return unless view = currentView()
   bomEl = document.getElementById 'contextmenu_encodingUseBOM'
   return if lastEncodingUseBOM is useBOM = bomEl.getAttribute('checked') is 'true'
-  view.document.encoding.use_byte_order_marker = useBOM
-  view.document.isDirty = yes
+  view.koDoc.encoding.use_byte_order_marker = useBOM
+  view.koDoc.isDirty = yes
   restartPolling originalTarget: view
 
 $toolkit.statusbar.updateViewIndentation = (levels) ->
   return if levels is lastIndentLevels
   return unless view = currentView()
   view.scimoz.tabWidth = view.scimoz.indent = levels
-  view.document.prefs.setLongPref 'indentWidth', levels
-  view.document.prefs.setLongPref 'tabWidth', levels
+  view.koDoc.prefs.setLongPref 'indentWidth', levels
+  view.koDoc.prefs.setLongPref 'tabWidth', levels
   restartPolling originalTarget: view
 
 $toolkit.statusbar.updateViewHardTabs = (useTabs) ->
   return if useTabs is lastIndentHardTabs
   return unless view = currentView()
   view.scimoz.useTabs = useTabs
-  view.document.prefs.setBooleanPref 'useTabs', useTabs
+  view.koDoc.prefs.setBooleanPref 'useTabs', useTabs
   restartPolling originalTarget: view
 
 $toolkit.statusbar.updateLineEndingsMenu = ->

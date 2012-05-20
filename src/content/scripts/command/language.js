@@ -32,14 +32,14 @@ $self.controller = function() {
 			if (this.supportedLanguages.indexOf('*') >= 0) {
 
 				isSupportedLanguage = true;
-				this.languageMatch = view.document.subLanguage;
+				this.languageMatch = view.koDoc.subLanguage;
 
 			// Check if the document is in a supported language
-			} if (LANGUAGE_SUPPORTED_LIST.indexOf(view.document.language) >= 0 &&
-				  this.supportedLanguages.indexOf(view.document.subLanguage) >= 0) {
+			} if (LANGUAGE_SUPPORTED_LIST.indexOf(view.koDoc.language) >= 0 &&
+				  this.supportedLanguages.indexOf(view.koDoc.subLanguage) >= 0) {
 
 				isSupportedLanguage = true;
-				this.languageMatch = view.document.subLanguage;
+				this.languageMatch = view.koDoc.subLanguage;
 
 			// Check if we have 'special' languages defined e.g. PHPDoc
 			} else {

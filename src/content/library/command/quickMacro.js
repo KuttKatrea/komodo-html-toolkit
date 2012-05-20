@@ -1,7 +1,7 @@
 (function() {
   var anchor, document, print, scimoz, session, view, _, __;
   view = ko.views.manager && ko.views.manager.currentView;
-  document = view && view.document;
+  document = view && view.koDoc;
   scimoz = view && view.scimoz;
   session = (this.__quickMacro_session || (this.__quickMacro_session = {}));
   _ = __ = scimoz && scimoz.selText;

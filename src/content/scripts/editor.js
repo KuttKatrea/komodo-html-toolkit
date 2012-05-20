@@ -20,7 +20,7 @@ const Ci = Components.interfaces;
 
 $self.isHtmlBuffer = function(view) {
 
-	var languagePair = [view.document.subLanguage, view.document.language];
+	var languagePair = [view.koDoc.subLanguage, view.koDoc.language];
 
 	return ((languagePair.indexOf('HTML') >= 0 || languagePair.indexOf('HTML5') >= 0) ||
 			// When starting a script or a style block within a server-side language e.g. PHP,
@@ -28,7 +28,7 @@ $self.isHtmlBuffer = function(view) {
 			((languagePair.indexOf('JavaScript') >= 0 || languagePair.indexOf('CSS') >= 0 ||
 			  // Immediately before <?php blocks
 			  languagePair.indexOf('PHP') >= 0) &&
-			 ['HTML', 'HTML5'].indexOf(view.document.languageForPosition(Math.max(0, Math.max(view.scimoz.anchor, view.scimoz.currentPos) - 1))) >= 0));
+			 ['HTML', 'HTML5'].indexOf(view.koDoc.languageForPosition(Math.max(0, Math.max(view.scimoz.anchor, view.scimoz.currentPos) - 1))) >= 0));
 };
 
 $self.findTagBefore = function(position, scimoz) {
@@ -280,7 +280,7 @@ $self.guessDoctype = function(view) {
 
 	// Figure out which DOM language we are in
 	var domLanguages = ['XML', 'HTML', 'HTML5', 'XHTML', 'XSLT'],
-		languageService = view.document.languageObj,
+		languageService = view.koDoc.languageObj,
 		viewLanguage = domLanguages.indexOf(languageService.name) < 0 ? null : languageService.name;
 
 	// If the document itself is not a DOM language, check against sub-languages i.e. HTML in PHP
@@ -335,7 +335,7 @@ $self.guessDoctype = function(view) {
 
 $self.isPHPDoc = function(view, position) {
 
-	return ('PHP' === view.document.language &&
+	return ('PHP' === view.koDoc.language &&
 			view.scimoz.SCE_UDL_SSL_COMMENTBLOCK === view.scimoz.getStyleAt(position));
 };
 
@@ -347,9 +347,9 @@ $self.invalidate = function() {
 $self.hasTabstops = function(view) {
 
 	// Ensure we don't have tabstops remaining within the buffer
-	if (view.document.hasTabstopInsertionTable) {
+	if (view.koDoc.hasTabstopInsertionTable) {
 
-		var tabstopsTable = view.document.getTabstopInsertionTable({});
+		var tabstopsTable = view.koDoc.getTabstopInsertionTable({});
 
 		// If we have one tabstop remaining, skip it if it's Backref #0
 		if (tabstopsTable.length === 1) {

@@ -279,7 +279,7 @@ $self.controller = function(command, triggerKeys, canChangeTriggerKeys, commandO
 		return (ko.views.manager &&
 				ko.views.manager.currentView &&
 				ko.views.manager.currentView.getAttribute('type') === 'editor' &&
-				ko.views.manager.currentView.document &&
+				ko.views.manager.currentView.koDoc &&
 				ko.views.manager.currentView.scimoz);
 	}
 

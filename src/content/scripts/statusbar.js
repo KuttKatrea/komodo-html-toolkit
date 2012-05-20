@@ -47,16 +47,16 @@
     var block, id;
     block = function() {
       var encodingButtonText, encodingWidget, indentationButtonText, indentationWidget, newEncodingLongName, newEncodingName, newEncodingPythonName, newEncodingUseBOM, newIndentHardTabs, newIndentLevels, newIndentTabWidth, newNewlineEndings;
-      if (!(view != null ? view.document : void 0)) {
+      if (!(view != null ? view.koDoc : void 0)) {
         return clearEverything();
       }
       try {
         if (view.getAttribute('type') === 'editor') {
-          newEncodingName = view.document.encoding.short_encoding_name;
-          newEncodingPythonName = view.document.encoding.python_encoding_name;
-          newEncodingLongName = view.document.encoding.friendly_encoding_name;
-          newEncodingUseBOM = view.document.encoding.use_byte_order_marker;
-          newNewlineEndings = view.document.new_line_endings;
+          newEncodingName = view.koDoc.encoding.short_encoding_name;
+          newEncodingPythonName = view.koDoc.encoding.python_encoding_name;
+          newEncodingLongName = view.koDoc.encoding.friendly_encoding_name;
+          newEncodingUseBOM = view.koDoc.encoding.use_byte_order_marker;
+          newNewlineEndings = view.koDoc.new_line_endings;
           if (lastEncodingName !== newEncodingName || lastEncodingPythonName !== newEncodingPythonName || lastEncodingLongName !== newEncodingLongName || lastEncodingUseBOM !== newEncodingUseBOM || lastNewlineEndings !== newNewlineEndings) {
             encodingButtonText = newEncodingName;
             if (newEncodingUseBOM) {
@@ -126,7 +126,7 @@
   currentView = function() {
     var view, _ref;
     view = (_ref = ko.views.manager) != null ? _ref.currentView : void 0;
-    if (view && view.getAttribute('type') === 'editor' && view.document && view.scimoz) {
+    if (view && view.getAttribute('type') === 'editor' && view.koDoc && view.scimoz) {
       return view;
     } else {
       return false;
@@ -154,8 +154,8 @@
     if (!(view = currentView())) {
       return;
     }
-    view.document.new_line_endings = mode;
-    view.document.prefs.setStringPref('endOfLine', newlineEndings[mode]);
+    view.koDoc.new_line_endings = mode;
+    view.koDoc.prefs.setStringPref('endOfLine', newlineEndings[mode]);
     return restartPolling({
       originalTarget: view
     });
@@ -165,7 +165,7 @@
     if (!(view = currentView())) {
       return;
     }
-    return view.document.existing_line_endings = lastNewlineEndings;
+    return view.koDoc.existing_line_endings = lastNewlineEndings;
   };
   $toolkit.statusbar.updateViewEncoding = function(pythonName) {
     var applyButton, cancelButton, choice, errorCode, errorMessage, lastErrorSvc, message, newEncoding, question, view, viewEncoding, warning;
@@ -181,11 +181,11 @@
     viewEncoding = Cc['@activestate.com/koEncoding;1'].createInstance(Ci.koIEncoding);
     viewEncoding.python_encoding_name = pythonName;
     viewEncoding.use_byte_order_marker = newEncoding.byte_order_marker && lastEncodingUseBOM;
-    warning = view.document.languageObj.getEncodingWarning(viewEncoding);
+    warning = view.koDoc.languageObj.getEncodingWarning(viewEncoding);
     question = $toolkit.l10n('htmltoolkit').formatStringFromName('areYouSureThatYouWantToChangeTheEncoding', [warning], 1);
     if (warning === '' || ko.dialogs.yesNo(question, 'No') === 'Yes') {
       try {
-        view.document.encoding = viewEncoding;
+        view.koDoc.encoding = viewEncoding;
         view.lintBuffer.request();
         return restartPolling({
           originalTarget: view
@@ -195,19 +195,19 @@
         errorCode = lastErrorSvc.getLastErrorCode();
         errorMessage = lastErrorSvc.getLastErrorMessage();
         if (errorCode === 0) {
-          message = $toolkit.l10n('htmltoolkit').formatStringFromName('internalErrorSettingTheEncoding', [view.document.displayPath, pythonName], 2);
+          message = $toolkit.l10n('htmltoolkit').formatStringFromName('internalErrorSettingTheEncoding', [view.koDoc.displayPath, pythonName], 2);
           return ko.dialogs.internalError(message, "" + message + "\n\n" + errorMessage, error);
         } else {
           question = $toolkit.l10n('htmltoolkit').formatStringFromName('forceEncodingConversion', [errorMessage], 1);
           choice = ko.dialogs.customButtons(question, ["&" + (applyButton = $toolkit.l10n('htmltoolkit').GetStringFromName('forceEncodingApplyButton')), "&" + (cancelButton = $toolkit.l10n('htmltoolkit').GetStringFromName('forceEncodingCancelButton'))], cancelButton);
           if (choice === applyButton) {
             try {
-              view.document.forceEncodingFromEncodingName(pythonName);
+              view.koDoc.forceEncodingFromEncodingName(pythonName);
               return restartPolling({
                 originalTarget: view
               });
             } catch (error) {
-              message = $toolkit.l10n('htmltoolkit').formatStringFromName('internalErrorForcingTheEncoding', [view.document.displayPath, pythonName], 2);
+              message = $toolkit.l10n('htmltoolkit').formatStringFromName('internalErrorForcingTheEncoding', [view.koDoc.displayPath, pythonName], 2);
               return ko.dialogs.internalError(message, "" + message + "\n\n" + errorMessage, error);
             }
           }
@@ -224,8 +224,8 @@
     if (lastEncodingUseBOM === (useBOM = bomEl.getAttribute('checked') === 'true')) {
       return;
     }
-    view.document.encoding.use_byte_order_marker = useBOM;
-    view.document.isDirty = true;
+    view.koDoc.encoding.use_byte_order_marker = useBOM;
+    view.koDoc.isDirty = true;
     return restartPolling({
       originalTarget: view
     });
@@ -239,8 +239,8 @@
       return;
     }
     view.scimoz.tabWidth = view.scimoz.indent = levels;
-    view.document.prefs.setLongPref('indentWidth', levels);
-    view.document.prefs.setLongPref('tabWidth', levels);
+    view.koDoc.prefs.setLongPref('indentWidth', levels);
+    view.koDoc.prefs.setLongPref('tabWidth', levels);
     return restartPolling({
       originalTarget: view
     });
@@ -254,7 +254,7 @@
       return;
     }
     view.scimoz.useTabs = useTabs;
-    view.document.prefs.setBooleanPref('useTabs', useTabs);
+    view.koDoc.prefs.setBooleanPref('useTabs', useTabs);
     return restartPolling({
       originalTarget: view
     });

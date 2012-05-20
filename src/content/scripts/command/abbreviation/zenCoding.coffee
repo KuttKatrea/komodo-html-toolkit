@@ -22,8 +22,8 @@ $self.provider = ->
     isInstalled = zen_editor? and zen_coding?
     return no unless isEnabled and isInstalled
     isHtmlBuffer          = root.editor.isHtmlBuffer view
-    isLanguageSupported   = SUBLANGUAGE_SUPPORTED_LIST.indexOf(view.document.subLanguage) >= 0
-    isLanguageSupported or= SUBLANGUAGE_EXTRA_LIST.indexOf(view.document.subLanguage) >= 0
+    isLanguageSupported   = SUBLANGUAGE_SUPPORTED_LIST.indexOf(view.koDoc.subLanguage) >= 0
+    isLanguageSupported or= SUBLANGUAGE_EXTRA_LIST.indexOf(view.koDoc.subLanguage) >= 0
     isLanguageSupported or= isHtmlBuffer
     return no unless isLanguageSupported
     scimoz = view.scimoz
@@ -55,7 +55,7 @@ $self.provider = ->
     content = zen_coding.expandAbbreviation abbreviation, zen_editor.getSyntax(), zen_editor.getProfileName()
     if content?.length
       # Stop erroneous completions in CSS documents
-      return null if content.indexOf('<') is 0 and SUBLANGUAGE_EXTRA_LIST.indexOf(view.document.subLanguage) >= 0
+      return null if content.indexOf('<') is 0 and SUBLANGUAGE_EXTRA_LIST.indexOf(view.koDoc.subLanguage) >= 0
       tabstop = 0
       content = content.replace zen_coding.getCaretPlaceholder(), ( -> "[[%tabstop#{tabstop += 1}]]"), 'g'
       content = content.replace "[[%tabstop#{tabstop - 1}]]", "[[%tabstop0]]"

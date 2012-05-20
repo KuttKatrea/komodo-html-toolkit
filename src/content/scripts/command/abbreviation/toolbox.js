@@ -31,18 +31,18 @@ $self.provider = function() {
 
 		var viewLanguages = [];
 
-		if (view.document.subLanguage)
-			viewLanguages.push(view.document.subLanguage);
+		if (view.koDoc.subLanguage)
+			viewLanguages.push(view.koDoc.subLanguage);
 
-		if (view.document.language && viewLanguages.indexOf(view.document.language) < 0)
-			viewLanguages.push(view.document.language);
+		if (view.koDoc.language && viewLanguages.indexOf(view.koDoc.language) < 0)
+			viewLanguages.push(view.koDoc.language);
 
 		// Special cases
 		if (viewLanguages.indexOf('HTML') < 0 &&
             viewLanguages.indexOf('HTML5') < 0) {
 
 			// subLanguage is not set to HTML in Smarty templates
-			if (view.document.subLanguage === 'Smarty')
+			if (view.koDoc.subLanguage === 'Smarty')
 				viewLanguages.push('HTML');
 			// Advanced cases e.g. immediately before <?php blocks
 			else if ($toolkit.editor.isHtmlBuffer(view))

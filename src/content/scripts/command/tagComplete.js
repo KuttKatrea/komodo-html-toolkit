@@ -21,11 +21,11 @@ $self.controller = function() {
 
 		var view = ko.views.manager.currentView,
 			scimoz = view.scimoz,
-			languagePair = [view.document.subLanguage, view.document.language];
+			languagePair = [view.koDoc.subLanguage, view.koDoc.language];
 
 		// If we are working in a PHP buffer, check one position back to make sure we have HTML
 		if (languagePair.indexOf('PHP') >= 0 &&
-			['HTML', 'HTML5'].indexOf(view.document.languageForPosition(Math.max(0, Math.max(scimoz.anchor, scimoz.currentPos) - 1))) < 0)
+			['HTML', 'HTML5'].indexOf(view.koDoc.languageForPosition(Math.max(0, Math.max(scimoz.anchor, scimoz.currentPos) - 1))) < 0)
 			return false;
 
 		var editorPosition = Math.min(scimoz.anchor, scimoz.currentPos),
